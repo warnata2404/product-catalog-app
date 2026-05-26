@@ -1,5 +1,7 @@
 import { SafeAreaView, StyleSheet, Text } from "react-native";
 
+import COLORS from "../constants/colors";
+
 export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
@@ -11,12 +13,13 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.background,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#ffffff",
   },
   title: {
     fontSize: 24,
     fontWeight: "700",
+    color: COLORS.black,
   },
 });
