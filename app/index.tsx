@@ -27,7 +27,9 @@ export default function HomeScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState("");
+
   const [searchQuery, setSearchQuery] = useState("");
+
   const [selectedCategory, setSelectedCategory] = useState("all");
 
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -88,34 +90,8 @@ export default function HomeScreen() {
     return <ErrorState message={error} />;
   }
 
-  if (filteredProducts.length === 0) {
-    return <EmptyState />;
-  }
-
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Product Catalog</Text>
-
-        <Text style={styles.totalText}>
-          {filteredProducts.length} Products Available
-        </Text>
-
-        <TextInput
-          placeholder="Search product..."
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          style={styles.searchInput}
-          placeholderTextColor={COLORS.gray}
-        />
-
-        <CategoryFilter
-          categories={categories}
-          selectedCategory={selectedCategory}
-          onSelectCategory={setSelectedCategory}
-        />
-      </View>
-
       <FlatList
         data={filteredProducts}
         keyExtractor={(item) => item.id.toString()}
@@ -124,6 +100,31 @@ export default function HomeScreen() {
         )}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
+        ListHeaderComponent={
+          <>
+            <View style={styles.header}>
+              <Text style={styles.headerTitle}>Product Catalog</Text>
+
+              <Text style={styles.totalText}>
+                {filteredProducts.length} Products Available
+              </Text>
+
+              <TextInput
+                placeholder="Search product..."
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                style={styles.searchInput}
+                placeholderTextColor={COLORS.gray}
+              />
+
+              <CategoryFilter
+                categories={categories}
+                selectedCategory={selectedCategory}
+                onSelectCategory={setSelectedCategory}
+              />
+            </View>
+          </>
+        }
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -131,6 +132,7 @@ export default function HomeScreen() {
             colors={[COLORS.primary]}
           />
         }
+        ListEmptyComponent={<EmptyState />}
       />
 
       <ProductDetailModal
@@ -151,7 +153,7 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 20,
     paddingTop: 20,
-    paddingBottom: 16,
+    paddingBottom: 20,
   },
 
   headerTitle: {
@@ -175,10 +177,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderWidth: 1,
     borderColor: COLORS.border,
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+
+    elevation: 2,
   },
 
   listContent: {
+    paddingBottom: 40,
     paddingHorizontal: 20,
-    paddingBottom: 20,
   },
 });

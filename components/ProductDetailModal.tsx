@@ -27,7 +27,7 @@ export default function ProductDetailModal({
   }
 
   return (
-    <Modal visible={visible} animationType="slide" transparent>
+    <Modal visible={visible} animationType="fade" transparent>
       <View style={styles.overlay}>
         <View style={styles.modalContainer}>
           <ScrollView showsVerticalScrollIndicator={false}>
@@ -45,7 +45,11 @@ export default function ProductDetailModal({
 
             <Text style={styles.description}>{product.description}</Text>
 
-            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+            <TouchableOpacity
+              style={styles.closeButton}
+              activeOpacity={0.8}
+              onPress={onClose}
+            >
               <Text style={styles.closeButtonText}>Close</Text>
             </TouchableOpacity>
           </ScrollView>
@@ -74,6 +78,8 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 250,
     marginBottom: 20,
+    backgroundColor: "#F8FAFC",
+    borderRadius: 12,
   },
 
   title: {
@@ -81,6 +87,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: COLORS.black,
     marginBottom: 10,
+    lineHeight: 30,
   },
 
   category: {
