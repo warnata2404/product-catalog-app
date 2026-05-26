@@ -4,6 +4,7 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from "react-native";
 
@@ -24,6 +25,7 @@ export default function HomeScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetchProducts();
@@ -50,6 +52,10 @@ export default function HomeScreen() {
     }
   };
 
+  const filteredProducts = products.filter((product) =>
+    product.title.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
   if (loading) {
     return <Loading />;
   }
@@ -58,7 +64,7 @@ export default function HomeScreen() {
     return <ErrorState message={error} />;
   }
 
-  if (products.length === 0) {
+  if (filteredProducts.length === 0) {
     return <EmptyState />;
   }
 
@@ -66,10 +72,22 @@ export default function HomeScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Product Catalog</Text>
+
+        <Text style={styles.totalText}>
+          {filteredProducts.length} Products Available
+        </Text>
+
+        <TextInput
+          placeholder="Search product..."
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          style={styles.searchInput}
+          placeholderTextColor={COLORS.gray}
+        />
       </View>
 
       <FlatList
-        data={products}
+        data={filteredProducts}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <ProductCard product={item} />}
         contentContainerStyle={styles.listContent}
@@ -102,6 +120,23 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "700",
     color: COLORS.black,
+  },
+
+  totalText: {
+    fontSize: 14,
+    color: COLORS.gray,
+    marginTop: 4,
+    marginBottom: 16,
+  },
+
+  searchInput: {
+    backgroundColor: COLORS.white,
+    borderRadius: 14,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: COLORS.border,
   },
 
   listContent: {
