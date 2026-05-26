@@ -1,15 +1,16 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import COLORS from "../constants/colors";
 import { Product } from "../types/product";
 
 interface ProductCardProps {
   product: Product;
+  onPress: () => void;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, onPress }: ProductCardProps) {
   return (
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card} activeOpacity={0.8} onPress={onPress}>
       <Image
         source={{ uri: product.image }}
         style={styles.image}
@@ -25,7 +26,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         <Text style={styles.price}>${product.price}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
